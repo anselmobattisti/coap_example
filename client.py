@@ -1,7 +1,10 @@
 #!/usr/bin/env python
-# python sensor.py s1 15
-# the first parameter is the sensor name
-# the second parameter is it's threshold
+# python client.py 127.0.0.1 5683 s1 10 0
+# 1 - CoaP server IP
+# 2 - CoaP port
+# 3 - Sensor ID, CoaP resource
+# 4 - Humidity Limit
+# 5 - Led that will blink at SenseHat
 
 import getopt
 import socket
@@ -21,6 +24,8 @@ white = (255, 255, 255)
 h_lim = int(sys.argv[4])
 path = "coap://"+sys.argv[1]+":"+sys.argv[2]+"/"+sys.argv[3]
 host, port, path = parse_uri(path)
+led = int(sys.argv[5])
+pixels = [None]*64
 
 # print path
 # print host
@@ -30,20 +35,20 @@ host, port, path = parse_uri(path)
 
 client = HelperClient(server=(host, port))
 
-# use example
-# response = client.get(path)
-# print response.payload
-
 while True:    
     time.sleep(1)
     response = client.get(path)  
     humidity = 0
     try:
         humidity = int(response.payload)
-        pixels = [red if humidity > h_lim else white for i in range(64)]
+        for i in range(64):
+            pixels[i] = white
+        if (humidity > h_lim):
+            pixels[led] = red
         sense.set_pixels(pixels)        
     except:
         print('Humidity is not defined or is not a number')
 
 
 client.stop()
+	

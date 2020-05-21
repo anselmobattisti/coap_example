@@ -27,18 +27,18 @@ Aparecerá escrito "Add New Sensor", Digite o ID do sensor, por exmeplo s2; O ID
 
 5 -Em um outro terminal rode o script que será o cliente e fará uso do SenseRat
 
->> python client.py 127.0.0.1 5683 s1 20
+>> python client.py 127.0.0.1 5683 s1 20 0
 
-Os leds ficarão vermelhos pois o limite que foi setado é de 20 e o valor armazenado no seu resource no CoaP s1 é 55.
+O led 0 ficará vermelhos é o led indicado para piscar quando o limite que for maior do que 20 e o valor armazenado no seu resource no CoaP s1 é 55.
 
 6 - Alere o valor do CoaP do recurso s1 para 10
 
 >> python sensor_simulator.py -o POST -p coap://127.0.0.1:5683/s1 -P 10
 
-Os leds deverão ficar brancos
+O led deverá ficar branco
 
 7 - Rode outro simulador mas agora configure para que ele leia os valores armazenados em S2
 
->> python client.py 127.0.0.1 5683 s2 5
+>> python client.py 127.0.0.1 5683 s2 5 1
 
-Cada cliente está lendo o seu recurso específico no servidor Coap
+Neste caso quando o valor do s2 for maior do que 5 o led 2 irá ficar piscando
